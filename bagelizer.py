@@ -17,12 +17,8 @@ logo = '/Users/maxsun/PycharmProjects/trend_data_app/images/P2S LOGO_COLOR.png'
 # Bagelizer 9000
 the latest & greatest in bagel software technology.
 
-Edit `/streamlit_app.py` to customize this app to your heart's desire :heart:
+![car salesman meme, slaps code this baby can fit so much bagels in it](images/bagel%20meme.png)
 
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
-
-In the meantime, below is an example of what you can do with just a few lines of code:
 """
 
 with st.echo(code_location='below'):
