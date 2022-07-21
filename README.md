@@ -1,2 +1,6 @@
-# bagelizer
-the latest and greatest in bagel software technology
+# Welcome to the Bagelizer 9000
+the latest & greatest in bagel software technology
+
+![car salesman meme, slaps code this baby can fit so much bagels in it](bagel%20meme.png)
+
+If you have any questions, get in touch with Max.
