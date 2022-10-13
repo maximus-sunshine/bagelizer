@@ -33,6 +33,8 @@ if uploaded_file is not None:
 
     with col1:
         st.header("FLAVOR BREAKDOWN")
+
+        # display flavor breakdown and total
         st.dataframe(flavors)
         st.write(flavors['Quantity'].sum())
 
@@ -43,6 +45,8 @@ if uploaded_file is not None:
 
     with col2:
         st.header("CATEGORY BREAKDOWN")
+
+        # display category breakdown & total
         st.dataframe(categories)
         st.write(categories['Bagels'].sum())
 
