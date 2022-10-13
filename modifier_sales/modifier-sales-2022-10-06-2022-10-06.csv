@@ -1,0 +1,83 @@
+Modifier Set,Modifier,Net Qty Sold,Net Sales,Qty Sold,Gross Sales,Qty Refunded,Refunds
+Bagel Adds,Avocado,1,$2.50,1,$2.50,0,$0.00
+Bagel Adds,Bacon,2,$6.00,2,$6.00,0,$0.00
+Bagel Adds,Cut In Half,4,$0.00,4,$0.00,0,$0.00
+Bagel Adds,Egg,1,$2.00,1,$2.00,0,$0.00
+Bagel Adds,Not Toasted,1,$0.00,1,$0.00,0,$0.00
+Bagel Adds,Red Onions Raw,1,$0.50,1,$0.50,0,$0.00
+Bagel Adds,Salmon,1,$8.00,1,$8.00,0,$0.00
+Bagel Adds,Sausage,2,$6.00,2,$6.00,0,$0.00
+Bagel Adds,Tomato,2,$1.00,2,$1.00,0,$0.00
+Bagel Flavor - Sandwich,Everything,26,$0.00,26,$0.00,0,$0.00
+Bagel Flavor - Sandwich,Plain,8,$0.00,8,$0.00,0,$0.00
+Bagel Flavor - Sandwich,Rosemary Sea Salt,16,$0.00,16,$0.00,0,$0.00
+Bagel Flavor - Sandwich,Sesame,13,$0.00,13,$0.00,0,$0.00
+Bagel Flavor - Sandwich,Za'atar,3,$0.00,3,$0.00,0,$0.00
+Bagel Flavor 01,Everything,14,$0.00,14,$0.00,0,$0.00
+Bagel Flavor 01,Plain,9,$0.00,9,$0.00,0,$0.00
+Bagel Flavor 01,Rosemary Sea Salt,16,$0.00,16,$0.00,0,$0.00
+Bagel Flavor 01,Sesame,8,$0.00,8,$0.00,0,$0.00
+Bagel Flavor 01,Za'atar,2,$0.00,2,$0.00,0,$0.00
+Bagel Flavor 02,Everything,4,$0.00,4,$0.00,0,$0.00
+Bagel Flavor 02,Plain,2,$0.00,2,$0.00,0,$0.00
+Bagel Flavor 02,Rosemary Sea Salt,2,$0.00,2,$0.00,0,$0.00
+Bagel Flavor 03,Everything,3,$0.00,3,$0.00,0,$0.00
+Bagel Flavor 03,Plain,2,$0.00,2,$0.00,0,$0.00
+Bagel Flavor 03,Rosemary Sea Salt,2,$0.00,2,$0.00,0,$0.00
+Bagel Flavor 03,Sesame,1,$0.00,1,$0.00,0,$0.00
+Bagel Flavor 04,Everything,1,$0.00,1,$0.00,0,$0.00
+Bagel Flavor 04,Plain,1,$0.00,1,$0.00,0,$0.00
+Bagel Flavor 04,Rosemary Sea Salt,3,$0.00,3,$0.00,0,$0.00
+Bagel Flavor 04,Sesame,3,$0.00,3,$0.00,0,$0.00
+Bagel Flavor 05,Rosemary Sea Salt,3,$0.00,3,$0.00,0,$0.00
+Bagel Flavor 05,Sesame,3,$0.00,3,$0.00,0,$0.00
+Bagel Flavor 05,Za'atar,1,$0.00,1,$0.00,0,$0.00
+Bagel Flavor 06,Rosemary Sea Salt,3,$0.00,3,$0.00,0,$0.00
+Bagel Flavor 06,Sesame,2,$0.00,2,$0.00,0,$0.00
+Bagel Flavor 06,Za'atar,2,$0.00,2,$0.00,0,$0.00
+Bagel Flavor 07,Sesame,2,$0.00,2,$0.00,0,$0.00
+Bagel Flavor 08,Sesame,2,$0.00,2,$0.00,0,$0.00
+Bagel Flavor 09,Everything,1,$0.00,1,$0.00,0,$0.00
+Bagel Flavor 09,Sesame,1,$0.00,1,$0.00,0,$0.00
+Bagel Flavor 10,Everything,1,$0.00,1,$0.00,0,$0.00
+Bagel Flavor 10,Za'atar,1,$0.00,1,$0.00,0,$0.00
+Bagel Flavor 11,Rosemary Sea Salt,1,$0.00,1,$0.00,0,$0.00
+Bagel Flavor 11,Za'atar,1,$0.00,1,$0.00,0,$0.00
+Bagel Flavor 12,Rosemary Sea Salt,1,$0.00,1,$0.00,0,$0.00
+Bagel Flavor 12,Za'atar,1,$0.00,1,$0.00,0,$0.00
+Basic Bitch Mods,Candied Bacon,8,$16.00,8,$16.00,0,$0.00
+Basic Bitch Mods,Sausage Patty,3,$6.00,3,$6.00,0,$0.00
+Basic Bitch Mods,Taylor Ham,1,$2.00,1,$2.00,0,$0.00
+Coffee Add Ons,Raw Sugar,1,$0.00,1,$0.00,0,$0.00
+Coffee Add Ons,Splenda,1,$0.00,1,$0.00,0,$0.00
+Coffee Flavors,Caramel,2,$1.50,2,$1.50,0,$0.00
+Coffee Flavors,Hazelnut,2,$1.50,2,$1.50,0,$0.00
+Coffee Flavors,Vanilla,3,$2.25,3,$2.25,0,$0.00
+Coffee Options,Add Shot,5,$5.00,5,$5.00,0,$0.00
+Coffee Options,Decaf,5,$0.00,5,$0.00,0,$0.00
+Coffee Options,Iced,20,$0.00,20,$0.00,0,$0.00
+Combo Drinks,Soda of Choice,1,$2.00,1,$2.00,0,$0.00
+Cream Cheese Options,Sub Garlic Herb Cream Cheese,1,$0.00,1,$0.00,0,$0.00
+Cream Cheese Options,Sub Jalapeno Cheddar Cheddar Cream Cheese,1,$0.00,1,$0.00,0,$0.00
+Deli Cheese Options,American White Cheese,1,$0.00,1,$0.00,0,$0.00
+Deli Cheese Options,Pepper jack,7,$0.00,7,$0.00,0,$0.00
+Deli Cheese Options,Sharp Cheddar,10,$0.00,10,$0.00,0,$0.00
+Hot Tea,English Breakfast,1,$0.00,1,$0.00,0,$0.00
+Hot Tea,Moroccan Green Mint,1,$0.00,1,$0.00,0,$0.00
+Iced Tea Flavors,Black Tea,2,$0.00,2,$0.00,0,$0.00
+Milk Options,Almond,8,$6.00,8,$6.00,0,$0.00
+Milk Options,Half & Half,1,$0.00,1,$0.00,0,$0.00
+Milk Options,Oat Milk,15,$11.25,15,$11.25,0,$0.00
+Milk Options,Soy,1,$0.75,1,$0.75,0,$0.00
+Milk Options,Whole Milk,1,$0.00,1,$0.00,0,$0.00
+Sando Combo Side,Combo Salad,1,$2.00,1,$2.00,0,$0.00
+Spreads,Bacon Chive Cream Cheese,2,$4.00,2,$4.00,0,$0.00
+Spreads,Berry Cream Cheese,1,$2.00,1,$2.00,0,$0.00
+Spreads,Butter,3,$1.50,3,$1.50,0,$0.00
+Spreads,Cream Cheese,12,$18.00,12,$18.00,0,$0.00
+Spreads,Dill Caper Cream Cheese,1,$2.00,1,$2.00,0,$0.00
+Spreads,Garlic Fine Herb Cream Cheese,5,$10.00,5,$10.00,0,$0.00
+Spreads,Jalapeño Cheddar Cream Cheese,3,$6.00,3,$6.00,0,$0.00
+Spreads,ON SIDE,3,$0.00,3,$0.00,0,$0.00
+Spreads,VEGAN Cream Cheese,3,$9.00,3,$9.00,0,$0.00
+Vegan Option,VEGAN,34,$0.00,34,$0.00,0,$0.00

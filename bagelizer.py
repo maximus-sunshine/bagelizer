@@ -3,41 +3,51 @@
 # Bagelizer 9000 - the latest & greatest in bagel software technology.
 
 # IMPORTS
-from collections import namedtuple
-import altair as alt
-import math
-import pandas as pd
+import plotly.express as px
 import streamlit as st
+import nomad_tools as nomad
 
 # set paths for Streamlit hosted app
-example_data_path = 'square_data/catalog-2022-06-22-0001.csv'
 logo = '/Users/maxsun/PycharmProjects/trend_data_app/images/P2S LOGO_COLOR.png'
 
 """
 # Bagelizer 9000
 the latest & greatest in bagel software technology.
+
+###### Upload a Modifier Sales report from Square.
 """
 
-st.image('./images/bagel meme.png')
-st.write('more to come soon')
+# st.image('./images/bagel meme.png')
+# st.write('more to come soon')
 
-# with st.echo(code_location='below'):
-#     total_points = st.slider("Number of points in spiral", 1, 5000, 2000)
-#     num_turns = st.slider("Number of turns in spiral", 1, 100, 9)
-#
-#     Point = namedtuple('Point', 'x y')
-#     data = []
-#
-#     points_per_turn = total_points / num_turns
-#
-#     for curr_point_num in range(total_points):
-#         curr_turn, i = divmod(curr_point_num, points_per_turn)
-#         angle = (curr_turn + 1) * 2 * math.pi * i / points_per_turn
-#         radius = curr_point_num / total_points
-#         x = radius * math.cos(angle)
-#         y = radius * math.sin(angle)
-#         data.append(Point(x, y))
-#
-#     st.altair_chart(alt.Chart(pd.DataFrame(data), height=500, width=500)
-#         .mark_circle(color='#0068c9', opacity=0.5)
-#         .encode(x='x:Q', y='y:Q'))
+uploaded_file = st.file_uploader("Choose a file")
+if uploaded_file is not None:
+
+    # import & process modifier sales report - only care about "Bagel Flavor"
+    df_mod = nomad.import_modifier_sales(uploaded_file)
+
+    # create & display flavor and category summaries above full dataframe
+    flavors, categories = nomad.create_summary(df_mod)
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.header("FLAVOR BREAKDOWN")
+        st.dataframe(flavors)
+        st.write(flavors['Quantity'].sum())
+
+        # pie chart from flavors
+        fig = px.pie(flavors, values='Quantity', names='Flavor', title='Bagel Flavor Breakdown')
+        fig.update_traces(textinfo='label+value+percent')
+        st.plotly_chart(fig, use_container_width=True)
+
+    with col2:
+        st.header("CATEGORY BREAKDOWN")
+        st.dataframe(categories)
+        st.write(categories['Bagels'].sum())
+
+    with col3:
+        st.header('MODIFIER SALES DATA')
+        st.dataframe(df_mod)
+
+
