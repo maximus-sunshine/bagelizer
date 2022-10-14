@@ -7,8 +7,14 @@ import plotly.express as px
 import streamlit as st
 import nomad_tools as nomad
 
+# set layout to fill screen
+st.set_page_config(layout="wide")
+
 # set paths for Streamlit hosted app
-logo = '/Users/maxsun/PycharmProjects/trend_data_app/images/P2S LOGO_COLOR.png'
+logo = './images/logo_nomad.png'
+
+# start printing stuff to the page, starting with a logo
+st.image(logo)
 
 """
 # Bagelizer 9000
@@ -16,9 +22,6 @@ the latest & greatest in bagel software technology.
 
 ###### Upload a Modifier Sales report from Square.
 """
-
-# st.image('./images/bagel meme.png')
-# st.write('more to come soon')
 
 uploaded_file = st.file_uploader("Choose a file")
 if uploaded_file is not None:
