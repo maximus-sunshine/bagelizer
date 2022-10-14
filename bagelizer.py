@@ -14,7 +14,7 @@ st.set_page_config(layout="wide")
 logo = './images/logo_nomad.png'
 
 # start printing stuff to the page, starting with a logo
-st.image(logo)
+st.image(logo, width=10)
 
 """
 # Bagelizer 9000
