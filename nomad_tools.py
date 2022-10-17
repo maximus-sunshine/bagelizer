@@ -62,15 +62,21 @@ def import_shifts(csv):
     shifts = pd.read_csv(csv)
 
     # drop non bagel shifts
-    shifts = shifts[shifts['Job title'].str.contains('Bagel',na=False)]
+    shifts = shifts[shifts['Job title'].str.contains('Bagel', na=False)]
 
     # drop unwanted columns
     shifts.drop(columns=['Employee number', 'Transaction tips', 'Declared cash tips'], inplace=True)
 
-    # format dates & sort dataframe by clockin date
+    # format clockin dates
     shifts['Clockin date'] = pd.to_datetime(shifts['Clockin date'])
     shifts['Clockin date'] = shifts['Clockin date'].dt.strftime('%Y-%m-%d')
-    shifts = shifts.sort_values('Clockin date')
+
+    # format clockin times
+    shifts['Clockin time'] = pd.to_datetime(shifts['Clockin time'])
+    shifts['Clockin time'] = shifts['Clockin time'].dt.strftime('%X')
+
+    # sort by clockin date then clockin time
+    shifts = shifts.sort_values(['Clockin date', 'Clockin time'], ignore_index=True)
 
     return shifts
 
