@@ -76,4 +76,8 @@ with tab2:
         shifts = nomad.import_shifts(shifts_report)
         st.dataframe(shifts)
 
-        st.write('more coming soon')
+        # calculate total regular hours, overtime hours, and doubletime hours
+        regular = shifts['Regular hours'].sum()
+        overtime = shifts['Overtime hours'].sum()
+        doubletime = shifts['Doubletime hours'].sum()
+        st.write('Regular Hours:', regular, 'Overtime Hours:', overtime, 'Doubletime Hours:', doubletime)
