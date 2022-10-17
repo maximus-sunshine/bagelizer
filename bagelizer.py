@@ -67,10 +67,10 @@ with tab2:
     shifts_report = st.file_uploader("Export and upload a shifts report from Square")
     if shifts_report is not None:
 
-        # allow user to select date range
-        d = st.date_input(
-            "Set date range below",
-            value=[date(2019, 7, 6), date(2019, 7, 7)])
+        # # allow user to select date range
+        # d = st.date_input(
+        #     "Set date range below",
+        #     value=[date(2019, 7, 6), date(2019, 7, 7)])
 
         # import and process shifts report and display the dataframe
         shifts = nomad.import_shifts(shifts_report)
