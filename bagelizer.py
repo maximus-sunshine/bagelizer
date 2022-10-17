@@ -64,7 +64,7 @@ with tab1:
 
 with tab2:
     # allow user to upload a modifier sales report exported from Square
-    shifts_report = st.file_uploader("Export and upload a shifts report from Square")
+    shifts_report = st.file_uploader("Export and upload a Shifts Report from Square")
     if shifts_report is not None:
 
         # # allow user to select date range
