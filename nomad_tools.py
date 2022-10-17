@@ -38,9 +38,9 @@ def create_summary(df_mod):
     za = df_mod.loc[df_mod['Modifier'] == "Za'atar", 'Qty Sold'].sum()
 
     # create flavors reports from modifier sales report - must call import_modifier_sales() first
-    df = pd.DataFrame()
-    df['Flavor'] = ['Everything', 'Plain', 'Rosemary Sea Salt', 'Sesame', "Za'atar"]
-    df['Quantity'] = [ev, pl, ro, se, za]
+    flavors = pd.DataFrame()
+    flavors['Flavor'] = ['Everything', 'Plain', 'Rosemary Sea Salt', 'Sesame', "Za'atar"]
+    flavors['Quantity'] = [ev, pl, ro, se, za]
 
     # get category sales data from df_mod
     sandos = df_mod.loc[df_mod['Modifier Set'] == 'Bagel Flavor - Sandwich', 'Qty Sold'].sum()
@@ -49,13 +49,34 @@ def create_summary(df_mod):
     four_packs = df_mod.loc[df_mod['Modifier Set'] == four_pack, 'Qty Sold'].sum() - dozens - half_dozens
     singles = df_mod.loc[df_mod['Modifier Set'] == single, 'Qty Sold'].sum() - dozens - half_dozens - four_packs
 
-    df2 = pd.DataFrame()
-    df2['Category'] = ['Sandwich', 'Single Bagel', '4 Pack', '1/2 Dozen', 'Dozen']
-    df2['Quantity'] = [sandos, singles, four_packs, half_dozens, dozens]
-    df2['Bagels'] = [sandos, singles, four_packs*4, half_dozens*6, dozens*12]
+    categories = pd.DataFrame()
+    categories['Category'] = ['Sandwich', 'Single Bagel', '4 Pack', '1/2 Dozen', 'Dozen']
+    categories['Quantity'] = [sandos, singles, four_packs, half_dozens, dozens]
+    categories['Bagels'] = [sandos, singles, four_packs * 4, half_dozens * 6, dozens * 12]
 
-    return df, df2
+    return flavors, categories
 
+
+def import_shifts(csv):
+    # create dataframe for Shifts Report exported from Square
+    shifts = pd.read_csv(csv)
+
+    # drop non bagel shifts
+    shifts = shifts[shifts['Job title'].str.contains('Bagel',na=False)]
+
+    # drop unwanted columns
+    shifts.drop(columns=['Employee number', 'Transaction tips', 'Declared cash tips'], inplace=True)
+
+    # format dates & sort dataframe by clockin date
+    shifts['Clockin date'] = pd.to_datetime(shifts['Clockin date'])
+    shifts['Clockin date'] = shifts['Clockin date'].dt.strftime('%Y-%m-%d')
+    shifts = shifts.sort_values('Clockin date')
+
+    return shifts
+
+
+# def get_date_range(df_mod):
+#     # get date range from df_mod
 
 def import_sales_data(date_range):
     # create dataframes for item sales, category sales, and modifier sales.
@@ -72,5 +93,3 @@ def import_sales_data(date_range):
     df_cat.sort_values(['Category'], inplace=True, ignore_index=True)
 
     return df_item, df_cat, df_mod
-
-# SCRIPT

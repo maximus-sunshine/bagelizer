@@ -3,6 +3,8 @@
 # Bagelizer 9000 - the latest & greatest in bagel software technology.
 
 # IMPORTS
+from datetime import datetime
+from datetime import date
 import plotly.express as px
 import streamlit as st
 import nomad_tools as nomad
@@ -10,33 +12,31 @@ import nomad_tools as nomad
 # set layout to fill screen
 st.set_page_config(layout="wide")
 
+# set paths for Streamlit hosted app
+logo = './images/logo_nomad.png'
+
+# start printing stuff to the page, starting with a logo
+st.image(logo, width=100)
+
+"""
+# Bagelizer 9000
+the latest & greatest in bagel software technology.
+"""
+
 # create tabs
 tab1, tab2 = st.tabs(["Bagel Sales", "Bagel Labor"])
 
 with tab1:
-
-    # set paths for Streamlit hosted app
-    logo = './images/logo_nomad.png'
-
-    # start printing stuff to the page, starting with a logo
-    st.image(logo, width=100)
-
-    """
-    # Bagelizer 9000
-    the latest & greatest in bagel software technology.
-    
-    ###### Upload a Modifier Sales report from Square.
-    """
-
-    uploaded_file = st.file_uploader("Choose a file")
-    if uploaded_file is not None:
-
+    # allow user to upload a modifier sales report exported from Square
+    modifier_sales_report = st.file_uploader("Export and upload a Modifier Sales report from Square")
+    if modifier_sales_report is not None:
         # import & process modifier sales report - only care about "Bagel Flavor"
-        df_mod = nomad.import_modifier_sales(uploaded_file)
+        df_mod = nomad.import_modifier_sales(modifier_sales_report)
 
         # create & display flavor and category summaries above full dataframe
         flavors, categories = nomad.create_summary(df_mod)
 
+        # create columns
         col1, col2, col3 = st.columns(3)
 
         with col1:
@@ -63,5 +63,17 @@ with tab1:
             st.dataframe(df_mod)
 
 with tab2:
+    # allow user to upload a modifier sales report exported from Square
+    shifts_report = st.file_uploader("Export and upload a shifts report from Square")
+    if shifts_report is not None:
 
-    st.write('coming soon')
+        # allow user to select date range
+        d = st.date_input(
+            "Set date range below",
+            value=[date(2019, 7, 6), date(2019, 7, 7)])
+
+        # import and process shifts report and display the dataframe
+        shifts = nomad.import_shifts(shifts_report)
+        st.dataframe(shifts)
+
+        st.write('more coming soon')
