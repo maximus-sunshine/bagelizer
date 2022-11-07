@@ -81,6 +81,23 @@ def import_shifts(csv):
     return shifts
 
 
+def count_money(series):
+    # takes a pandas Series of currency values in $USD as an argument and returns the sum
+    total = series.astype(float).sum()
+
+    return total
+
+
+def total_labor_cost(shifts):
+    # drop $ sign so we can sum
+    labor_cost = shifts['Total labor cost'].str[1:]
+
+    # get the total labor cost
+    total_labor_cost = count_money(labor_cost)
+
+    return total_labor_cost
+
+
 # def get_date_range(df_mod):
 #     # get date range from df_mod
 

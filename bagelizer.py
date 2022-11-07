@@ -27,6 +27,8 @@ the latest & greatest in bagel software technology.
 tab1, tab2 = st.tabs(["Bagel Sales", "Bagel Labor"])
 
 with tab1:
+    # BAGEL SALES
+
     # allow user to upload a modifier sales report exported from Square
     modifier_sales_report = st.file_uploader("Export and upload a Modifier Sales report from Square")
     if modifier_sales_report is not None:
@@ -63,6 +65,8 @@ with tab1:
             st.dataframe(df_mod)
 
 with tab2:
+    # BAGEL LABOR
+
     # allow user to upload a modifier sales report exported from Square
     shifts_report = st.file_uploader("Export and upload a Shifts Report from Square")
     if shifts_report is not None:
@@ -81,3 +85,7 @@ with tab2:
         overtime = shifts['Overtime hours'].sum()
         doubletime = shifts['Doubletime hours'].sum()
         st.write('Regular Hours:', regular, 'Overtime Hours:', overtime, 'Doubletime Hours:', doubletime)
+
+        # calculate total labor cost
+        total_labor_cost = nomad.total_labor_cost(shifts)
+        st.write('Total Labor Cost ($):', total_labor_cost)
