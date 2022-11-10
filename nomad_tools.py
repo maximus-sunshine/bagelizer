@@ -78,25 +78,49 @@ def import_shifts(csv):
     # sort by clockin date then clockin time
     shifts = shifts.sort_values(['Clockin date', 'Clockin time'], ignore_index=True)
 
-    return shifts
+    # create smaller dataframes for each job title
+    admin = shifts[shifts['Job title'].str.contains('Admin', na=False)]
+    am_bake = shifts[shifts['Job title'].str.contains('Morning Bake', na=False)]
+    roll = shifts[shifts['Job title'].str.contains('Roll', na=False)]
+    pm_bake = shifts[shifts['Job title'].str.contains('Evening Bake', na=False)]
+    delivery = shifts[shifts['Job title'].str.contains('Delivery', na=False)]
+
+    return shifts, admin, am_bake, roll, pm_bake, delivery
 
 
 def count_money(series):
     # takes a pandas Series of currency values in $USD as an argument and returns the sum
+
+    # drop $ sign so we can sum
+    series = series.str[1:]
+
+    # sum
     total = series.astype(float).sum()
 
     return total
 
 
 def total_labor_cost(shifts):
+    # calculates total labor cost from a shifts report
+
     # drop $ sign so we can sum
     labor_cost = shifts['Total labor cost'].str[1:]
 
     # get the total labor cost
-    total_labor_cost = count_money(labor_cost)
+    total_labor_cost = labor_cost.astype(float).sum()
 
     return total_labor_cost
 
+
+def shifts_summary(shifts):
+    # takes a "shifts" or "shifts"-like dataframe and returns total regular hours, OT hours, DT hours, and total
+    # labor cost
+    regular = shifts['Regular hours'].sum()
+    overtime = shifts['Overtime hours'].sum()
+    doubletime = shifts['Doubletime hours'].sum()
+    labor_cost = total_labor_cost(shifts)
+
+    return regular, overtime, doubletime, labor_cost
 
 # def get_date_range(df_mod):
 #     # get date range from df_mod
