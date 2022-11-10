@@ -7,6 +7,7 @@ from datetime import datetime
 from datetime import date
 import plotly.express as px
 import streamlit as st
+import pandas as pd
 import nomad_tools as nomad
 
 
