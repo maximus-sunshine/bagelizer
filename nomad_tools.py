@@ -24,7 +24,10 @@ def import_modifier_sales(csv):
     df_mod.sort_values(['Modifier Set', 'Modifier'], inplace=True, ignore_index=True)
 
     # drop unwanted columns
-    df_mod.drop(columns=['Net Qty Sold', 'Net Sales', 'Gross Sales', 'Qty Refunded', 'Refunds'], inplace=True)
+    df_mod.drop(columns=['Net Sales',
+                         'Gross Sales',
+                         'Qty Refunded',
+                         'Refunds'], inplace=True)
 
     return df_mod
 
@@ -65,11 +68,17 @@ def import_shifts(csv):
     shifts = shifts[shifts['Job title'].str.contains('Bagel', na=False)]
 
     # drop unwanted columns
-    shifts.drop(columns=['Employee number', 'Transaction tips', 'Declared cash tips'], inplace=True)
+    shifts.drop(columns=['Doubletime labor cost', 'Overtime labor cost', 'Regular labor cost',
+                         'Unpaid break', 'Break end time', 'Break end date',
+                         'Break start time', 'Break start date', 'Clockout date', 'Location', 'Employee number',
+                         'Transaction tips', 'Declared cash tips'], inplace=True)
 
     # format clockin dates
     shifts['Clockin date'] = pd.to_datetime(shifts['Clockin date'])
     shifts['Clockin date'] = shifts['Clockin date'].dt.strftime('%Y-%m-%d')
+
+    # add day of week column
+    shifts.insert(3, 'Day', pd.to_datetime(shifts['Clockin date']).dt.day_name())
 
     # format clockin times
     shifts['Clockin time'] = pd.to_datetime(shifts['Clockin time'])
@@ -121,6 +130,7 @@ def shifts_summary(shifts):
     labor_cost = total_labor_cost(shifts)
 
     return regular, overtime, doubletime, labor_cost
+
 
 # def get_date_range(df_mod):
 #     # get date range from df_mod

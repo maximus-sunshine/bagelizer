@@ -56,9 +56,9 @@ with tab1:
         flavors, categories = nomad.create_summary(df_mod)
 
         # create columns
-        col1, col2, col3 = st.columns(3)
+        col_a1, col_a2, col3 = st.columns(3)
 
-        with col1:
+        with col_a1:
             st.header("FLAVOR BREAKDOWN")
 
             # display flavor breakdown and total
@@ -70,7 +70,7 @@ with tab1:
             fig.update_traces(textinfo='label+value+percent')
             st.plotly_chart(fig, use_container_width=True)
 
-        with col2:
+        with col_a2:
             st.header("CATEGORY BREAKDOWN")
 
             # display category breakdown & total
@@ -92,15 +92,15 @@ with tab2:
         #     value=[date(2019, 7, 6), date(2019, 7, 7)])
 
         # create columns
-        col1, col2 = st.columns([3, 1])
+        col_a1, col_a2 = st.columns([3, 1])
 
-        with col1:
+        with col_a1:
             # import and process shifts report and display the dataframe
             st.header("BAGEL CREW SHIFTS")
             shifts, admin, am_bake, roll, pm_bake, delivery = nomad.import_shifts(shifts_report)
             shifts_summary(shifts)
 
-        with col2:
+        with col_a2:
             # admin_labor = nomad.total_labor_cost(admin)
             # am_bake_labor = nomad.total_labor_cost(am_bake)
             # roll_labor = nomad.total_labor_cost(roll)
