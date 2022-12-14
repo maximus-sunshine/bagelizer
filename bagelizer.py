@@ -7,6 +7,7 @@ from datetime import datetime
 from datetime import date
 import plotly.express as px
 import streamlit as st
+from streamlit_extras.dataframe_explorer import dataframe_explorer
 import pandas as pd
 import nomad_tools as nomad
 
@@ -27,11 +28,12 @@ def shifts_summary(shifts):
     return
 
 
+# VARIABLES/PATHS
+logo = './images/logo_nomad.png'
+
+# START OF SCRIPT
 # set layout to fill screen
 st.set_page_config(layout="wide")
-
-# set paths for Streamlit hosted app
-logo = './images/logo_nomad.png'
 
 # start printing stuff to the page, starting with a logo
 st.image(logo, width=100)
@@ -42,7 +44,7 @@ the latest & greatest in bagel software technology.
 """
 
 # create tabs
-tab1, tab2 = st.tabs(["Bagel Sales", "Bagel Labor"])
+tab1, tab2, tab3 = st.tabs(["Bagel Sales", "Bagel Labor", "Generic Data Explorer"])
 
 # BAGEL SALES
 with tab1:
@@ -101,15 +103,20 @@ with tab2:
             shifts_summary(shifts)
 
         with col_a2:
-            # admin_labor = nomad.total_labor_cost(admin)
-            # am_bake_labor = nomad.total_labor_cost(am_bake)
-            # roll_labor = nomad.total_labor_cost(roll)
-            # pm_bake_labor = nomad.total_labor_cost(pm_bake)
-            # delivery_labor = nomad.total_labor_cost(delivery)
-            # values = [admin_labor, am_bake_labor, roll_labor, pm_bake_labor]
+            """
+            #### FRESHLY BAKED PIE CHART
+            """
+            pie_chart_names = st.selectbox(
+                'HOW WOULD YOU LIKE YOUR PIE?',
+                ['Job title', 'First name', 'Day'])
 
-            fig = px.pie(shifts, values='Total paid hours', names='Job title', title='BREAKDOWN BY HOURS')
-            # fig.update_traces(textinfo='label+value+percent')
+            fig = px.pie(shifts, values='Total paid hours', names=pie_chart_names)
+            fig.update_layout(legend=dict(
+                yanchor="top",
+                y=0.99,
+                xanchor="left",
+                x=0.01
+            ))
             st.plotly_chart(fig, use_container_width=True)
 
         # show breakdown by shift type
@@ -124,8 +131,11 @@ with tab2:
         st.subheader("ROLL")
         shifts_summary(roll)
 
-        st.subheader("EVENING BAKE")
-        shifts_summary(pm_bake)
-
-        st.subheader("DELIVERY")
-        shifts_summary(delivery)
+# GENERIC DATA EXPLORER
+with tab3:
+    # allow user to upload a modifier sales report exported from Square
+    data = st.file_uploader("Export and upload a CSV")
+    if data is not None:
+        df = pd.read_csv(data)
+        filtered_df = dataframe_explorer(df)
+        st.dataframe(filtered_df)
