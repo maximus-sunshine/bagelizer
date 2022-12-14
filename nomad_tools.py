@@ -87,6 +87,9 @@ def import_shifts(csv):
     # sort by clockin date then clockin time
     shifts = shifts.sort_values(['Clockin date', 'Clockin time'], ignore_index=True)
 
+    # drop $ sign in total labor cost column
+    shifts['Total labor cost'] = shifts['Total labor cost'].str[1:]
+
     # create smaller dataframes for each job title
     admin = shifts[shifts['Job title'].str.contains('Admin', na=False)]
     am_bake = shifts[shifts['Job title'].str.contains('Morning Bake', na=False)]
@@ -112,11 +115,8 @@ def count_money(series):
 def total_labor_cost(shifts):
     # calculates total labor cost from a shifts report
 
-    # drop $ sign so we can sum
-    labor_cost = shifts['Total labor cost'].str[1:]
-
     # get the total labor cost
-    total_labor_cost = labor_cost.astype(float).sum()
+    total_labor_cost = shifts['Total labor cost'].astype(float).sum()
 
     return total_labor_cost
 

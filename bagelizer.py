@@ -106,11 +106,15 @@ with tab2:
             """
             #### FRESHLY BAKED PIE CHART
             """
-            pie_chart_names = st.selectbox(
-                'HOW WOULD YOU LIKE YOUR PIE?',
+            names = st.selectbox(
+                'What kind of pie do you want?',
                 ['Job title', 'First name', 'Day'])
 
-            fig = px.pie(shifts, values='Total paid hours', names=pie_chart_names)
+            values = st.selectbox(
+                'How do you want it sliced?',
+                ['Total paid hours', 'Total labor cost'])
+
+            fig = px.pie(shifts, values=values, names=names)
             fig.update_layout(legend=dict(
                 yanchor="top",
                 y=0.99,
