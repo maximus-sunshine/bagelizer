@@ -44,7 +44,7 @@ the latest & greatest in bagel software technology.
 """
 
 # create tabs
-tab1, tab2, tab3 = st.tabs(["Bagel Sales", "Bagel Labor", "Generic Data Explorer"])
+tab1, tab2, tab3, tab4 = st.tabs(["Bagel Sales", "Bagel Labor", "All Sales", "All Labor"])
 
 # BAGEL SALES
 with tab1:
@@ -85,7 +85,7 @@ with tab1:
 
 # BAGEL LABOR
 with tab2:
-    # allow user to upload a modifier sales report exported from Square
+    # allow user to upload a shifts report exported from Square
     shifts_report = st.file_uploader("Export and upload a Shifts Report from Square")
     if shifts_report is not None:
         # # allow user to select date range
@@ -135,11 +135,45 @@ with tab2:
         st.subheader("ROLL")
         shifts_summary(roll)
 
-# GENERIC DATA EXPLORER
+# ALL SALES
 with tab3:
     # allow user to upload a modifier sales report exported from Square
-    data = st.file_uploader("Export and upload a CSV")
+    data = st.file_uploader("Export and upload an Item Sales report from Square")
     if data is not None:
+
+        # read in data & drop the $ in Net Sales column
         df = pd.read_csv(data)
-        filtered_df = dataframe_explorer(df)
+        df['Net Sales'] = df['Net Sales'].str[1:]
+
+        # format clockin dates
+        df['Date'] = pd.to_datetime(df['Date'])
+        df['Date'] = df['Date'].dt.strftime('%Y-%m-%d')
+
+        # # allow user to filter the dataframe
+        # filtered_df = df
+        filtered_df = nomad.filter_dataframe(df)
+
+        # display a pie chart
+        fig = px.pie(filtered_df, values=filtered_df['Net Sales'], names=filtered_df['Category'])
+        fig.update_layout(legend=dict(
+            yanchor="top",
+            y=0.99,
+            xanchor="left",
+            x=0.01
+        ))
+        st.plotly_chart(fig, use_container_width=True)
+
+        # display the data
         st.dataframe(filtered_df)
+
+
+
+# ALL LABOR
+with tab4:
+    # allow user to upload a shifts report exported from Square
+    overall_shifts_report = st.file_uploader("Export and upload a Shifts Report from Square:")
+    if overall_shifts_report is not None:
+        # allow user to select date range
+        d = st.date_input(
+            "Set date range below",
+            value=[date(2019, 7, 6), date(2019, 7, 7)])
