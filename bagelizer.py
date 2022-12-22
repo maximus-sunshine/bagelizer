@@ -89,14 +89,28 @@ with tab2:
     # allow user to upload a shifts report exported from Square
     shifts_report = st.file_uploader("Export and upload a Shifts Report from Square")
     if shifts_report is not None:
+        # import and process shifts report
+        shifts, admin, am_bake, roll, pm_bake, delivery = nomad.import_shifts(shifts_report)
+
+        # format clockin dates
+        shifts['Clockin date'] = pd.to_datetime(shifts['Clockin date'])
+
+        # allow user to select date range
+        d = st.date_input(
+            "Set date range below",
+            value=[shifts['Clockin date'].min(), shifts['Clockin date'].max()])
+
+        # filter the dataframe by date and format it as a string
+        shifts = shifts[shifts['Clockin date'] >= pd.to_datetime(d[0])]
+        shifts = shifts[shifts['Clockin date'] <= pd.to_datetime(d[1])]
+        shifts['Clockin date'] = shifts['Clockin date'].dt.strftime('%Y-%m-%d')
 
         # create columns
         col_a1, col_a2 = st.columns([3, 1])
 
         with col_a1:
-            # import and process shifts report and display the dataframe
+            # display the dataframe
             st.header("BAGEL CREW SHIFTS")
-            shifts, admin, am_bake, roll, pm_bake, delivery = nomad.import_shifts(shifts_report)
             shifts_summary(shifts)
 
         with col_a2:

@@ -115,36 +115,6 @@ def import_modifier_sales(csv):
     return df_mod
 
 
-def create_summary(df_mod):
-    # get bagel flavor sales data from df_mod
-    ev = df_mod.loc[df_mod['Modifier'] == 'Everything', 'Qty Sold'].sum()
-    pl = df_mod.loc[df_mod['Modifier'] == 'Plain', 'Qty Sold'].sum()
-    ro = df_mod.loc[df_mod['Modifier'] == 'Rosemary Sea Salt', 'Qty Sold'].sum()
-    se = df_mod.loc[df_mod['Modifier'] == 'Sesame', 'Qty Sold'].sum()
-    za = df_mod.loc[df_mod['Modifier'] == "Za'atar", 'Qty Sold'].sum()
-
-    # create flavors reports from modifier sales report - must call import_modifier_sales() first
-    flavors = pd.DataFrame()
-    flavors['Flavor'] = ['Everything', 'Plain', 'Rosemary Sea Salt', 'Sesame', "Za'atar"]
-    flavors['Quantity'] = [ev, pl, ro, se, za]
-
-    # get category sales data from df_mod
-    sandos = df_mod.loc[df_mod['Modifier Set'] == 'Bagel Flavor - Sandwich', 'Qty Sold'].sum()
-    dozens = df_mod.loc[df_mod['Modifier Set'] == dozen, 'Qty Sold'].sum()
-    half_dozens = df_mod.loc[df_mod['Modifier Set'] == half_dozen, 'Qty Sold'].sum() - dozens
-    four_packs = df_mod.loc[df_mod['Modifier Set'] == four_pack, 'Qty Sold'].sum() - dozens - half_dozens
-    singles = df_mod.loc[df_mod['Modifier Set'] == single, 'Qty Sold'].sum() - dozens - half_dozens - four_packs
-
-    categories = pd.DataFrame()
-    categories['Category'] = ['Sandwich', 'Single Bagel', '4 Pack', '1/2 Dozen', 'Dozen']
-    categories['Price ($)'] = [1, 2, 6, 9, 18]
-    categories['Quantity'] = [sandos, singles, four_packs, half_dozens, dozens]
-    categories['Bagels'] = [sandos, singles, four_packs * 4, half_dozens * 6, dozens * 12]
-    categories['Sales ($)'] = categories['Quantity'] * categories['Price ($)']
-
-    return flavors, categories
-
-
 def import_shifts(csv):
     # create dataframe for Shifts Report exported from Square
     shifts = pd.read_csv(csv)
@@ -183,6 +153,36 @@ def import_shifts(csv):
     delivery = shifts[shifts['Job title'].str.contains('Delivery', na=False)]
 
     return shifts, admin, am_bake, roll, pm_bake, delivery
+
+
+def create_summary(df_mod):
+    # get bagel flavor sales data from df_mod
+    ev = df_mod.loc[df_mod['Modifier'] == 'Everything', 'Qty Sold'].sum()
+    pl = df_mod.loc[df_mod['Modifier'] == 'Plain', 'Qty Sold'].sum()
+    ro = df_mod.loc[df_mod['Modifier'] == 'Rosemary Sea Salt', 'Qty Sold'].sum()
+    se = df_mod.loc[df_mod['Modifier'] == 'Sesame', 'Qty Sold'].sum()
+    za = df_mod.loc[df_mod['Modifier'] == "Za'atar", 'Qty Sold'].sum()
+
+    # create flavors reports from modifier sales report - must call import_modifier_sales() first
+    flavors = pd.DataFrame()
+    flavors['Flavor'] = ['Everything', 'Plain', 'Rosemary Sea Salt', 'Sesame', "Za'atar"]
+    flavors['Quantity'] = [ev, pl, ro, se, za]
+
+    # get category sales data from df_mod
+    sandos = df_mod.loc[df_mod['Modifier Set'] == 'Bagel Flavor - Sandwich', 'Qty Sold'].sum()
+    dozens = df_mod.loc[df_mod['Modifier Set'] == dozen, 'Qty Sold'].sum()
+    half_dozens = df_mod.loc[df_mod['Modifier Set'] == half_dozen, 'Qty Sold'].sum() - dozens
+    four_packs = df_mod.loc[df_mod['Modifier Set'] == four_pack, 'Qty Sold'].sum() - dozens - half_dozens
+    singles = df_mod.loc[df_mod['Modifier Set'] == single, 'Qty Sold'].sum() - dozens - half_dozens - four_packs
+
+    categories = pd.DataFrame()
+    categories['Category'] = ['Sandwich', 'Single Bagel', '4 Pack', '1/2 Dozen', 'Dozen']
+    categories['Price ($)'] = [1, 2, 6, 9, 18]
+    categories['Quantity'] = [sandos, singles, four_packs, half_dozens, dozens]
+    categories['Bagels'] = [sandos, singles, four_packs * 4, half_dozens * 6, dozens * 12]
+    categories['Sales ($)'] = categories['Quantity'] * categories['Price ($)']
+
+    return flavors, categories
 
 
 def count_money(series):
