@@ -161,7 +161,7 @@ with tab3:
 
         # allow user to select date range
         d = st.date_input(
-            "Set date range below",
+            "Set date range below:",
             value=[df['Date'].min(), df['Date'].max()])
 
         # filter the dataframe by date and format it as a string
