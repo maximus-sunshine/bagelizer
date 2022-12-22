@@ -65,7 +65,7 @@ with tab1:
 
             # display flavor breakdown and total
             st.dataframe(flavors)
-            st.write(flavors['Quantity'].sum())
+            st.write('Total Bagels: ', flavors['Quantity'].sum())
 
             # pie chart from flavors
             fig = px.pie(flavors, values='Quantity', names='Flavor', title='Bagel Flavor Breakdown')
@@ -77,7 +77,8 @@ with tab1:
 
             # display category breakdown & total
             st.dataframe(categories)
-            st.write(categories['Bagels'].sum())
+            st.write('Total Bagels: ', categories['Bagels'].sum(), '   Total Bagel Sales ($): ', categories['Sales ($)'].sum())
+
 
         with col3:
             st.header('MODIFIER SALES DATA')
@@ -88,10 +89,6 @@ with tab2:
     # allow user to upload a shifts report exported from Square
     shifts_report = st.file_uploader("Export and upload a Shifts Report from Square")
     if shifts_report is not None:
-        # # allow user to select date range
-        # d = st.date_input(
-        #     "Set date range below",
-        #     value=[date(2019, 7, 6), date(2019, 7, 7)])
 
         # create columns
         col_a1, col_a2 = st.columns([3, 1])
@@ -143,18 +140,31 @@ with tab3:
 
         # read in data & drop the $ in Net Sales column
         df = pd.read_csv(data)
-        df['Net Sales'] = df['Net Sales'].str[1:]
+        df['Net Sales'] = df['Net Sales'].str.replace('$', '').str.replace(',', '')
 
         # format clockin dates
         df['Date'] = pd.to_datetime(df['Date'])
+
+        # allow user to select date range
+        d = st.date_input(
+            "Set date range below",
+            value=[df['Date'].min(), df['Date'].max()])
+
+        # filter the dataframe by date and format it as a string
+        df = df[df['Date'] >= pd.to_datetime(d[0])]
+        df = df[df['Date'] <= pd.to_datetime(d[1])]
         df['Date'] = df['Date'].dt.strftime('%Y-%m-%d')
 
-        # # allow user to filter the dataframe
-        # filtered_df = df
-        filtered_df = nomad.filter_dataframe(df)
+        # write some stats
+        st.write('Net Sales ($): ', df['Net Sales'].astype(float).sum())
+        # st.write('Net Sales ($): ', df['Net Sales'].sum())
 
         # display a pie chart
-        fig = px.pie(filtered_df, values=filtered_df['Net Sales'], names=filtered_df['Category'])
+        names = st.selectbox(
+            'What kind of pie do you want?',
+            ['Category', 'Item', 'Location'])
+
+        fig = px.pie(df, values='Net Sales', names=names)
         fig.update_layout(legend=dict(
             yanchor="top",
             y=0.99,
@@ -164,9 +174,7 @@ with tab3:
         st.plotly_chart(fig, use_container_width=True)
 
         # display the data
-        st.dataframe(filtered_df)
-
-
+        st.dataframe(df)
 
 # ALL LABOR
 with tab4:

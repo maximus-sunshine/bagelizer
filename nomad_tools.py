@@ -137,8 +137,10 @@ def create_summary(df_mod):
 
     categories = pd.DataFrame()
     categories['Category'] = ['Sandwich', 'Single Bagel', '4 Pack', '1/2 Dozen', 'Dozen']
+    categories['Price ($)'] = [1, 2, 6, 9, 18]
     categories['Quantity'] = [sandos, singles, four_packs, half_dozens, dozens]
     categories['Bagels'] = [sandos, singles, four_packs * 4, half_dozens * 6, dozens * 12]
+    categories['Sales ($)'] = categories['Quantity'] * categories['Price ($)']
 
     return flavors, categories
 
@@ -171,7 +173,7 @@ def import_shifts(csv):
     shifts = shifts.sort_values(['Clockin date', 'Clockin time'], ignore_index=True)
 
     # drop $ sign in total labor cost column
-    shifts['Total labor cost'] = shifts['Total labor cost'].str[1:]
+    shifts['Total labor cost'] = shifts['Total labor cost'].str.replace('$', '').str.replace(',', '')
 
     # create smaller dataframes for each job title
     admin = shifts[shifts['Job title'].str.contains('Admin', na=False)]
