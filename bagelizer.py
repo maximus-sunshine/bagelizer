@@ -27,7 +27,6 @@ def shifts_summary(shifts):
 
     return
 
-
 # VARIABLES/PATHS
 logo = './images/logo_nomad.png'
 
@@ -44,7 +43,7 @@ the latest & greatest in bagel software technology.
 """
 
 # create tabs
-tab1, tab2, tab3, tab4 = st.tabs(["Bagel Sales", "Bagel Labor", "All Sales", "All Labor"])
+tab1, tab2, tab3 = st.tabs(["Bagel Sales", "Bagel Labor", "Donut Sales"])
 
 # BAGEL SALES
 with tab1:
@@ -146,7 +145,7 @@ with tab2:
         st.subheader("ROLL")
         shifts_summary(roll)
 
-# ALL SALES
+# DONUT SALES
 with tab3:
     # allow user to upload a modifier sales report exported from Square
     data = st.file_uploader("Export and upload an Item Sales report from Square")
@@ -178,7 +177,11 @@ with tab3:
             'What kind of pie do you want?',
             ['Category', 'Item', 'Location'])
 
-        fig = px.pie(df, values='Net Sales', names=names)
+        values = st.selectbox(
+            'How do you want it sliced?',
+            ['Net Sales', 'Qty'])
+
+        fig = px.pie(df, values=values, names=names)
         fig.update_layout(legend=dict(
             yanchor="top",
             y=0.99,
@@ -189,13 +192,3 @@ with tab3:
 
         # display the data
         st.dataframe(df)
-
-# ALL LABOR
-with tab4:
-    # allow user to upload a shifts report exported from Square
-    overall_shifts_report = st.file_uploader("Export and upload a Shifts Report from Square:")
-    if overall_shifts_report is not None:
-        # allow user to select date range
-        d = st.date_input(
-            "Set date range below",
-            value=[date(2019, 7, 6), date(2019, 7, 7)])
