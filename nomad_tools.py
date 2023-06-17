@@ -159,16 +159,16 @@ def create_summary(df_mod):
     # get bagel flavor sales data from df_mod
     ev = df_mod.loc[df_mod['Modifier'] == 'Everything', 'Qty Sold'].sum()
     pl = df_mod.loc[df_mod['Modifier'] == 'Plain', 'Qty Sold'].sum()
-    ro = df_mod.loc[df_mod['Modifier'] == 'Rosemary Sea Salt', 'Qty Sold'].sum()
     se = df_mod.loc[df_mod['Modifier'] == 'Sesame', 'Qty Sold'].sum()
     za = df_mod.loc[df_mod['Modifier'] == "Za'atar", 'Qty Sold'].sum()
+    ro = df_mod.loc[df_mod['Modifier'] == 'Rosemary Sea Salt', 'Qty Sold'].sum()
     ja = df_mod[df_mod['Modifier'].str.contains("Jalapeño")]['Qty Sold'].sum()
     bl = df_mod.loc[df_mod['Modifier'] == "Blueberry", 'Qty Sold'].sum()
 
     # create flavors reports from modifier sales report - must call import_modifier_sales() first
     flavors = pd.DataFrame()
-    flavors['Flavor'] = ['Everything', 'Plain', 'Rosemary Sea Salt', 'Sesame', "Za'atar", "Jalapeño", "Blueberry"]
-    flavors['Quantity'] = [ev, pl, ro, se, za, ja, bl]
+    flavors['Flavor'] = ['Everything', 'Plain', 'Sesame', "Za'atar", 'Rosemary Sea Salt', "Jalapeño", "Blueberry"]
+    flavors['Quantity'] = [ev, pl, se, za, ro, ja, bl]
 
     # get category sales data from df_mod
     sandos = df_mod.loc[df_mod['Modifier Set'] == 'Bagel Flavor - Sandwich', 'Qty Sold'].sum()
