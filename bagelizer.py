@@ -49,71 +49,132 @@ tab1, tab2, tab3 = st.tabs(["Sales & Labor Report", "Bagel Sales", "Bagel Labor"
 with tab1:
     # allow user to upload a category sales report exported from Square
     cat_sales = st.file_uploader("Export and upload an Category Sales report from Square")
-    if cat_sales is not None:
+    all_shifts = st.file_uploader("Export and upload a Shift Sales report from Square")
+    if cat_sales is not None and all_shifts is not None:
 
-        # read in data
-        df = pd.read_csv(cat_sales)
+        # create columns
+        col_1, col_2 = st.columns(2)
 
-        # add a column for "Area"
-        df.insert(0, 'Area', '')  # Inserting a column titled 'Area' at index 0 with empty values
+        with col_1:
+            st.header("SALES")
 
-        # Create a dictionary mapping categories to areas
-        category_area_mapping = {
-            'Beer': 'Beverages',
-            'Bottled & Canned Drinks': 'Beverages',
-            'Day Tripper': 'Beverages',
-            'Mimosas, Rose': 'Beverages',
-            'Not-Coffee': 'Beverages',
-            'Coffee': 'Coffee',
-            "B'Fast Sandwiches": 'Day Kitchen',
-            "B'Rad Sandwiches": 'Day Kitchen',
-            'Catering & Events': 'Day Kitchen',
-            'Daily Specials': 'Day Kitchen',
-            'Extras': 'Day Kitchen',
-            'Side Sauce': 'Day Kitchen',
-            'Sidekicks': 'Day Kitchen',
-            'Sides': 'Day Kitchen',
-            'Spreads To Go': 'Day Kitchen',
-            'Bakery': 'Donut',
-            'Basic Donuts': 'Donut',
-            'Donut Holes': 'Donut',
-            'Dozen Donuts': 'Donut',
-            'Specialty Donuts': 'Donut',
-            'Uncategorized': 'Misc',
-            'Locally Made': 'Misc',
-            'Merch': 'Misc',
-            'Bagels To Go': 'Wholesale',
-            'Wholesale': 'Wholesale'
-        }
+            # read in data
+            df = pd.read_csv(cat_sales)
 
-        # Populate the 'Area' column based on the 'Category' column (exact match with ignoring extra spaces) - hard
-        # coding sandwiches because the apostrophe is messing things up
-        for category, area in category_area_mapping.items():
-            df.loc[df['Category'].str.strip() == category, 'Area'] = area
-            df.loc[df['Category'].str.contains('Sandwich', case=False, na=False), 'Area'] = 'Day Kitchen'
+            # add a column for "Area"
+            df.insert(0, 'Area', '')  # Inserting a column titled 'Area' at index 0 with empty values
 
-        # sort alphabetically by Area
-        df = df.sort_values(['Area', 'Category'], ascending=True)
+            # Create a dictionary mapping categories to areas
+            category_area_mapping = {
+                'Beer': 'Beverages',
+                'Bottled & Canned Drinks': 'Beverages',
+                'Day Tripper': 'Beverages',
+                'Mimosas, Rose': 'Beverages',
+                'Not-Coffee': 'Beverages',
+                'Coffee': 'Coffee',
+                "B'Fast Sandwiches": 'Day Kitchen',
+                "B'Rad Sandwiches": 'Day Kitchen',
+                'Catering & Events': 'Day Kitchen',
+                'Daily Specials': 'Day Kitchen',
+                'Extras': 'Day Kitchen',
+                'Side Sauce': 'Day Kitchen',
+                'Sidekicks': 'Day Kitchen',
+                'Sides': 'Day Kitchen',
+                'Spreads To Go': 'Day Kitchen',
+                'Bakery': 'Donut',
+                'Basic Donuts': 'Donut',
+                'Donut Holes': 'Donut',
+                'Dozen Donuts': 'Donut',
+                'Specialty Donuts': 'Donut',
+                'Uncategorized': 'Misc',
+                'Locally Made': 'Misc',
+                'Merch': 'Misc',
+                'Bagels To Go': 'Wholesale',
+                'Wholesale': 'Wholesale'
+            }
 
-        # display the data
-        st.dataframe(df)
+            # Populate the 'Area' column based on the 'Category' column (exact match with ignoring extra spaces) - hard
+            # coding sandwiches because the apostrophe is messing things up
+            for category, area in category_area_mapping.items():
+                df.loc[df['Category'].str.strip() == category, 'Area'] = area
+                df.loc[df['Category'].str.contains('Sandwich', case=False, na=False), 'Area'] = 'Day Kitchen'
 
-        # Remove '$' and ',' from 'Net Sales' values and convert to numeric
-        df['Net Sales'] = df['Net Sales'].str.replace('[\$,]', '', regex=True).astype(float)
+            # sort alphabetically by Area
+            df = df.sort_values(['Area', 'Category'], ascending=True)
 
-        # Calculate the total Net Sales (without dollar signs and commas) for each area
-        area_net_sales = df.groupby('Area')['Net Sales'].sum()
+            # display the data
+            st.dataframe(df)
 
-        # Calculate the total Net Sales across all areas
-        total_net_sales = area_net_sales.sum()
+            # Remove '$' and ',' from 'Net Sales' values and convert to numeric
+            df['Net Sales'] = df['Net Sales'].str.replace('[\$,]', '', regex=True).astype(float)
 
-        # Print the summary of Net Sales by Area
-        st.write('Summary:')
-        for area, net_sales in area_net_sales.items():
-            st.write(f'{area}: ${net_sales:,.2f}')
+            # Calculate the total Net Sales (without dollar signs and commas) for each area
+            area_net_sales = df.groupby('Area')['Net Sales'].sum()
 
-        # Add a line for the total Net Sales across all areas
-        st.write(f'Total Net Sales: ${total_net_sales:,.2f}')
+            # Calculate the total Net Sales across all areas
+            total_net_sales = area_net_sales.sum()
+
+            # Print the summary of Net Sales by Area
+            st.write('SALES SUMMARY:')
+            for area, net_sales in area_net_sales.items():
+                st.write(f'{area}: ${net_sales:,.2f}')
+
+            # Add a line for the total Net Sales across all areas
+            st.write(f'TOTAL NET SALES: ${total_net_sales:,.2f}')
+
+        with col_2:
+            st.header("LABOR")
+
+            # read in data
+            df2 = pd.read_csv(all_shifts)
+
+            # Drop the last row
+            df2 = df2.drop(df2.index[-1])
+
+            # Rename the column title to "Area"
+            df2 = df2.rename(columns={'Employee number': 'Area'})
+
+            # Create a dictionary mapping job titles to areas
+            job_title_area_mapping = {
+                'Admin': 'Admin',
+                'Bagel': 'Bagel',
+                'Night': 'Donut',
+                'Donut': 'Donut',
+                'Barista': 'FOH',
+                'Cashier': 'FOH',
+                'Expo': 'FOH',
+                'Lead': 'FOH',
+                'FOH': 'FOH',
+                'Day': 'Day Kitchen',
+                'Supervisor': 'Day Kitchen'
+            }
+
+            # Populate the 'Area' column based on the 'Job title' column
+            for job_title, area in job_title_area_mapping.items():
+                df2.loc[df2['Job title'].str.contains(job_title, case=False, na=False), 'Area'] = area
+
+            # sort alphabetically by Area
+            df2 = df2.sort_values(['Area', 'Job title'], ascending=True)
+
+            # display the data
+            st.dataframe(df2)
+
+            # Remove '$' and ',' from 'Total labor cost' values and convert to numeric
+            df2['Total labor cost'] = df2['Total labor cost'].str.replace('[\$,]', '', regex=True).astype(float)
+
+            # Calculate the total labor cost (without dollar signs and commas) for each area
+            area_labor_cost = df2.groupby('Area')['Total labor cost'].sum()
+
+            # Calculate the total Net Sales across all areas
+            total_labor_cost = area_labor_cost.sum()
+
+            # Print the summary of Labor Cost by Area
+            st.write('LABOR SUMMARY:')
+            for area, labor_cost in area_labor_cost.items():
+                st.write(f'{area}: ${labor_cost:,.2f}')
+
+            # Add a line for the total labor cost across all areas
+            st.write(f'TOTAL LABOR COST: ${total_labor_cost:,.2f}')
 
 # BAGEL SALES
 with tab2:
