@@ -35,7 +35,7 @@ logo = './images/logo_nomad.png'
 st.set_page_config(layout="wide")
 
 # start printing stuff to the page, starting with a logo
-st.image(logo, width=100)
+st.image(logo, width=150)
 
 """
 # Bagelizer 9000
@@ -49,7 +49,7 @@ tab1, tab2, tab3 = st.tabs(["Sales & Labor Report", "Bagel Sales", "Bagel Labor"
 with tab1:
     # allow user to upload a category sales report exported from Square
     cat_sales = st.file_uploader("Export and upload an Category Sales report from Square")
-    all_shifts = st.file_uploader("Export and upload a Shift Sales report from Square")
+    all_shifts = st.file_uploader("Export and upload a Shifts report from Square")
     if cat_sales is not None and all_shifts is not None:
 
         # create columns
@@ -93,13 +93,13 @@ with tab1:
                 'Wholesale': 'Wholesale'
             }
 
-            # Populate the 'Area' column based on the 'Category' column (exact match with ignoring extra spaces) - hard
-            # coding sandwiches because the apostrophe is messing things up
+            # Populate the 'Area' column based on the 'Category' column (exact match with ignoring extra spaces)
+            # hard coding sandwiches because the apostrophe is messing things up
             for category, area in category_area_mapping.items():
                 df.loc[df['Category'].str.strip() == category, 'Area'] = area
                 df.loc[df['Category'].str.contains('Sandwich', case=False, na=False), 'Area'] = 'Day Kitchen'
 
-            # sort alphabetically by Area
+            # sort alphabetically by Area, then Category
             df = df.sort_values(['Area', 'Category'], ascending=True)
 
             # display the data
@@ -110,6 +110,16 @@ with tab1:
 
             # Calculate the total Net Sales (without dollar signs and commas) for each area
             area_net_sales = df.groupby('Area')['Net Sales'].sum()
+
+            # pie chart
+            fig = px.pie(area_net_sales,
+                         values='Net Sales',
+                         names=area_net_sales.index,
+                         color_discrete_sequence=px.colors.qualitative.Set1,
+                         title='Sales Breakdown')
+            # fig.update_traces(texttemplate="$%{value:.2f}")
+            fig.update_traces(textinfo='label+value+percent')
+            st.plotly_chart(fig, use_container_width=True)
 
             # Calculate the total Net Sales across all areas
             total_net_sales = area_net_sales.sum()
@@ -146,15 +156,16 @@ with tab1:
                 'Lead': 'FOH',
                 'FOH': 'FOH',
                 'Day': 'Day Kitchen',
-                'Supervisor': 'Day Kitchen'
+                'Supervisor': 'Day Kitchen',
+                'Team Member' : 'Admin'
             }
 
             # Populate the 'Area' column based on the 'Job title' column
             for job_title, area in job_title_area_mapping.items():
                 df2.loc[df2['Job title'].str.contains(job_title, case=False, na=False), 'Area'] = area
 
-            # sort alphabetically by Area
-            df2 = df2.sort_values(['Area', 'Job title'], ascending=True)
+            # re-order the dataframe
+            df2 = df2.sort_values(['Area', 'Job title', 'Clockin date', 'Clockin time'], ascending=True)
 
             # display the data
             st.dataframe(df2)
@@ -164,6 +175,15 @@ with tab1:
 
             # Calculate the total labor cost (without dollar signs and commas) for each area
             area_labor_cost = df2.groupby('Area')['Total labor cost'].sum()
+
+            # pie chart
+            fig = px.pie(area_labor_cost,
+                         values='Total labor cost',
+                         names=area_labor_cost.index,
+                         color_discrete_sequence=px.colors.qualitative.Set2,
+                         title='Labor Breakdown')
+            fig.update_traces(textinfo='label+value+percent')
+            st.plotly_chart(fig, use_container_width=True)
 
             # Calculate the total Net Sales across all areas
             total_labor_cost = area_labor_cost.sum()
@@ -175,6 +195,9 @@ with tab1:
 
             # Add a line for the total labor cost across all areas
             st.write(f'TOTAL LABOR COST: ${total_labor_cost:,.2f}')
+
+        # Add a line for the total labor cost across all areas
+        st.subheader(f'OVERALL LABOR COST PERCENTAGE: {total_labor_cost/total_net_sales*100:,.2f}%')
 
 # BAGEL SALES
 with tab2:
